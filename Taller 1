@@ -1,0 +1,91 @@
+#include<iostream>
+
+using namespace std;
+struct Temperaturas {
+    float valor;
+    char momento[10];
+};
+struct RegistroT {
+    char fecha[10];
+    Temperaturas manana;
+    Temperaturas tarde;
+    Temperaturas noche;
+};
+int main(){
+    int opcion;
+    int numDias;
+    RegistroT*registros = NULL;
+    float promedio;
+do{                     
+cout<<"\nMENU DE OPCCIONES:\n";
+cout<<"1. Deseas reguistrar temperaturas?\n";
+cout<<"2. Mostrar reguistros guardados en el sistema\n";
+cout<<"3. Deseas calcular promedio de las temperatura del dia?\n";
+cout<<"4. Deseas calcular promedio de todas las temperaturas registradas?\n";
+cout<<"0. Deseas salir?.\n";
+cin>>opcion;
+cout<<endl; 
+ switch (opcion) {
+            case 1:
+                cout<<"Ingresa el numero de dias que deseas registrar: ";
+                cin>>numDias;
+                registros = (RegistroT*)malloc(numDias * sizeof(RegistroT));
+                for (int u= 0; u < numDias; ++u) {
+                cout<<"Dia " << u+1 << endl;
+                cout<<"Fecha (Dia/Mes/Anio): ";
+                cin>>registros[u].fecha;
+                cout<<"Temperatura de la manana: ";
+                cin>>registros[u].manana.valor;
+                cout<<"Temperatura de la tarde: ";
+                cin>>registros[u].tarde.valor;
+                cout<<"Temperatura de la noche: ";
+                cin>>registros[u].noche.valor;
+                cout<< endl; 
+                }
+                break;
+            case 2:
+                if (registros==NULL) {
+                    cout<<"No se encuentran registros disponibles :(.\n";
+                } else {
+                    cout<<"\nRegistros de las temperatura:\n";
+                    for (int u= 0; u < numDias; ++u) {
+                    cout<<" Dia " << u+1 << ": " << registros[u].fecha << endl;
+                    cout<<" manana "<< registros[u].manana.valor<<" grados, "<<registros[u].manana.momento<<endl;
+                    cout<<" Tarde "<<registros[u].tarde.valor<<" grados, "<<registros[u].tarde.momento<<endl;
+                    cout<<" Noche "<<registros[u].noche.valor<<" grados, "<<registros[u].noche.momento<<endl;
+                    }
+                }
+                break;
+            case 3:
+                if (registros==NULL) {
+                    cout<<"No se encuentran registros disponibles :(.\n";
+                }else {
+                    cout<<"\nPromedio de temperatura del dia:\n";
+                    for(int u= 0; u < numDias; ++u) {
+                    float promedioDia= (registros[u].manana.valor + registros[u].tarde.valor + registros[u].noche.valor) / 3.0;
+                    cout<<"Dia "<< u+1 <<": "<<promedioDia<<" grados\n";
+                    }
+                }
+                break;
+            case 4:
+                if  (registros== NULL) {
+                    cout<<"No se encuentran registros disponibles :(.\n";
+                } else {
+                    float sumaTotal = 0;
+                    for (int u = 0; u < numDias; ++u) {
+                    sumaTotal += (registros[u].manana.valor + registros[u].tarde.valor + registros[u].noche.valor);
+                    }
+                    promedio= sumaTotal/(numDias * 3);
+                    cout<<"\nEl promedio de todas las temperaturas registradas es: "<<promedio<<" grados\n";
+                }
+                break;
+            case 0:
+                cout<<"Hasta la proxima :)\n";
+                break;
+            default:
+                cout<<"Esta opcion no es valida. Por favor seleccione una opcion ^_____^.\n";
+                break;
+        }
+    }while (opcion!=0);
+free(registros);
+}
